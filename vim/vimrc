@@ -146,6 +146,8 @@ function! s:StatusLine(new_stl, type, current)
         " No custom statusline is set, use new_stl
         let &l:statusline = new_stl
     endif
+
+    return &l:statusline
 endfunction
 
 " s:StatusLineColors() {{{2
@@ -357,6 +359,16 @@ augroup StatusLineHighlight
     autocmd BufLeave,BufWinLeave,WinLeave,CmdwinLeave * call <SID>StatusLine((exists('b:stl') ? b:stl : g:default_stl), 'Normal', 0)
     autocmd InsertEnter,CursorHoldI * call <SID>StatusLine((exists('b:stl') ? b:stl : g:default_stl), 'Insert', 1)
 augroup END
+
+" Tagbar {{{2
+" TagbarStatuslineOther() {{{2
+function! TagbarStatuslineOther(current)
+    return <SID>StatusLine((exists('b:stl') ? b:stl : g:default_stl), 'Normal', a:current)
+endfunction
+
+let g:tagbar_statusfuncs = {
+    \ 'other'  : 'TagbarStatuslineOther'
+\ }
 
 " Functions {{{1
 
